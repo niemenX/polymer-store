@@ -1,4 +1,7 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="http://localhost:61665/components/polymer-buy/polymer-buy.html">
+<link rel="import" href="http://localhost:61665/components/polymer-basket/polymer-basket.html">
+<link rel="import" href="http://localhost:61665/components/polymer-sku-list/polymer-sku-list.html">
 
 <dom-module id="polymer-store">
   <template>
@@ -7,12 +10,16 @@
         display: block;
       }
     </style>
-    <h2>Hello [[prop1]]!</h2>
-  </template>
-
+    <div>
+     <h1 id="store">The Model Store</h1>
+     <polymer-basket></polymer-basket>
+     <polymer-sku-list product=[[product]]></polymer-sku-list>
+      <polymer-buy sku=[[product.variant]]></polymer-buy>
+    </div>
+    </template>
   <script>
     /**
-     * `polymer-store`
+     * `polymer-store`polymer 
      * store
      *
      * @customElement
@@ -23,9 +30,52 @@
       static get is() { return 'polymer-store'; }
       static get properties() {
         return {
-          prop1: {
-            type: String,
-            value: 'polymer-store'
+          state: {
+            type: Object,
+            value: function() {
+                      return {
+                        variant: 't_porsche',
+                      };
+                    }
+          },
+          product: {
+            type: Object,
+            value: function() {
+                return {
+                  name: 'Tractor',
+                  variants: [
+                    {
+                      sku: 't_porsche',
+                      color: 'red',
+                      name: 'Porsche-Diesel Master 419',
+                      image: this.resolveUrl('/images/tractor-red.jpg'),
+                      thumb: this.resolveUrl('/images/tractor-red-thumb.jpg'),
+                      price: '66,00 €',
+                    },
+                    {
+                      sku: 't_fendt',
+                      color: 'green',
+                      name: 'Fendt F20 Dieselroß',
+                      image: this.resolveUrl('/images/tractor-green.jpg'),
+                      thumb: this.resolveUrl('/images/tractor-green-thumb.jpg'),
+                      price: '54,00 €',
+                    },
+                    {
+                      sku: 't_eicher',
+                      color: 'blue',
+                      name: 'Eicher Diesel 215/16',
+                      image: this.resolveUrl('/images/tractor-blue.jpg'),
+                      thumb: this.resolveUrl('/images/tractor-blue-thumb.jpg'),
+                      price: '58,00 €',
+                    },
+                  ],
+                };
+            }
+          },
+
+          variant: {
+            type: Object,
+            value: function() {return this.product.variants.find(v => this.state.variant === v.sku);}
           }
         };
       }
